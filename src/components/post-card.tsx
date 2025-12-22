@@ -1,7 +1,7 @@
 import { PortableText } from 'next-sanity'
 import Image from 'next/image'
 
-import { Author } from '@/components/Author'
+import { Author } from '@/components/author'
 import { Categories } from '@/components/categories'
 import { components } from '@/sanity/portableTextComponents'
 import { POST_QUERYResult } from '@/sanity/types'
