@@ -28,7 +28,11 @@ export const pageType = defineType({
       options: {
         hotspot: true,
       },
-    }),    
+    }),
+    defineField({
+      name: "seo",
+      type: "seo",
+    }),
   ],
   preview: {
     select: {
@@ -36,5 +40,4 @@ export const pageType = defineType({
       subtitle: "slug.current",
     },
   },
-  
 });
