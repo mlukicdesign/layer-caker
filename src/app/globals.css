@@ -1,2 +1,7 @@
+/* Import tailwind styles to global stylesheet */
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+
+/* Ensure Tailwind scans both app routes and shared components (incl. blocks) */
+@source "./**/*.{ts,tsx,js,jsx,mdx}";
+@source "../components/**/*.{ts,tsx,js,jsx,mdx}";
