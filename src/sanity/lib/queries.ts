@@ -1,5 +1,8 @@
 import { defineQuery } from 'next-sanity'
 
+
+// Posts Query
+
 export const POSTS_QUERY =
   defineQuery(`*[_type == "post" && defined(slug.current)]|order(publishedAt desc)[0...12]{
   _id,
@@ -26,10 +29,14 @@ export const POSTS_QUERY =
   }
 }`)
 
+// Posts Slugs Query
+
 export const POSTS_SLUGS_QUERY =
   defineQuery(`*[_type == "post" && defined(slug.current)]{ 
   "slug": slug.current
 }`)
+
+// Posts Query
 
 export const POST_QUERY =
   defineQuery(`*[_type == "post" && slug.current == $slug][0]{
@@ -56,6 +63,7 @@ export const POST_QUERY =
   }
 }`);
 
+// 
 
 export const PAGE_QUERY =
   defineQuery(`*[_type == "page" && slug.current == $slug][0]{
@@ -69,7 +77,8 @@ export const PAGE_QUERY =
   }
 }`);
 
-// ...all other queries
+
+// Home page content query
 
 export const HOME_PAGE_QUERY = defineQuery(`*[_id == "siteSettings"][0]{
   homePage->{

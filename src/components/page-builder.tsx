@@ -32,6 +32,11 @@ export const createDataAttributeConfig = {
   baseUrl: typeof stega.studioUrl === "string" ? stega.studioUrl : "",
 };
 
+// Base union of blocks coming from the PageBuilder content
+type Block = NonNullable<
+  NonNullable<PAGE_QUERYResult>["content"]
+>[number] & { _key: string; _type: string };
+
 export function PageBuilder({
   content,
   documentId,
@@ -53,6 +58,10 @@ export function PageBuilder({
     return null;
   }
 
+  const validBlocks = blocks.filter(
+    (block): block is Block => Boolean(block?._key) && Boolean(block?._type)
+  );
+
   return (
     <main
       data-sanity={createDataAttribute({
@@ -62,7 +71,7 @@ export function PageBuilder({
         path: "content",
       }).toString()}
     >
-      {blocks.map((block) => {
+      {validBlocks.map((block) => {
         const DragHandle = ({ children }: { children: React.ReactNode }) => (
           <div
             data-sanity={createDataAttribute({
@@ -105,7 +114,12 @@ export function PageBuilder({
             );
           default:
             // This is a fallback for when we don't have a block type
-            return <div key={block._key}>Block not found: {block._type}</div>;
+            const fallback = block as any;
+            return (
+              <div key={fallback?._key ?? "unknown"}>
+                Block not found: {fallback?._type ?? "unknown"}
+              </div>
+            );
         }
       })}
     </main>
