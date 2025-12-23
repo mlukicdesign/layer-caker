@@ -11,8 +11,8 @@ import { faqsType } from './blocks/faqsType'
 import { featuresType } from './blocks/featuresType';
 import { heroType } from './blocks/heroType';
 import { splitImageType } from './blocks/splitImageType';
-import { split } from 'sanity/migrate'
+import { siteSettingsType } from './siteSettingsType'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [blockContentType, categoryType, postType, authorType, pageType, pageBuilderType, faqType, faqsType, featuresType, heroType, splitImageType],
+  types: [blockContentType, categoryType, postType, authorType, pageType, pageBuilderType, faqType, faqsType, featuresType, heroType, splitImageType, siteSettingsType],
 }

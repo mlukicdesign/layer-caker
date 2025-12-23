@@ -12,6 +12,16 @@ export const structure: StructureResolver = (S) =>
       S.documentTypeListItem("faq").title("FAQs"),
       S.divider(),
       ...S.documentTypeListItems().filter(
-        (item) => item.getId() && !['post', 'category', 'author', 'page', 'faq'].includes(item.getId()!),
+        (item) => item.getId() && !['post', 'category', 'author', 'page', 'faq', 'siteSettings'].includes(item.getId()!),
       ),
+      S.listItem()
+        .id("siteSettings")
+        .schemaType("siteSettings")
+        .title("Site Settings")
+        .child(
+          S.editor()
+            .id("siteSettings")
+            .schemaType("siteSettings")
+            .documentId("siteSettings")
+        ),
     ])
