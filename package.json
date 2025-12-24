@@ -12,6 +12,7 @@
     "typegen": "sanity schema extract --enforce-required-fields --path=./src/sanity/extract.json && sanity typegen generate"
   },
   "dependencies": {
+    "@sanity/assist": "^5.0.3",
     "@sanity/client": "^7.13.2",
     "@sanity/icons": "^3.7.4",
     "@sanity/image-url": "^1.2.0",
@@ -22,6 +23,7 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "sanity": "^4.22.0",
+    "schema-dts": "^1.1.5",
     "styled-components": "^6.1.19"
   },
   "devDependencies": {
