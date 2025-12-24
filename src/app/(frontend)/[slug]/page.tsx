@@ -8,6 +8,7 @@ type RouteProps = {
   params: Promise<{ slug: string }>;
 };
 
+// Fetch page data based on slug
 const getPage = async (params: RouteProps["params"]) =>
   sanityFetch({
     query: PAGE_QUERY,
@@ -23,20 +24,22 @@ export async function generateMetadata({
     return {};
   }
 
+  // Generate base metadata from the page SEO settings
   const metadata: Metadata = {
     title: page.seo.title,
     description: page.seo.description,
   };
 
-  if (page.seo.image) {
-    metadata.openGraph = {
-      images: {
-        url: urlFor(page.seo.image).width(1200).height(630).url(),
-        width: 1200,
-        height: 630,
-      },
-    };
-  }
+  // Generate open Graphic Image is not provided in the SEO settings
+  metadata.openGraph = {
+    images: {
+      url: page.seo.image
+        ? urlFor(page.seo.image).width(1200).height(630).url()
+        : `/api/og?id=${page._id}`,
+      width: 1200,
+      height: 630,
+    },
+  };
 
   if (page.seo.noIndex) {
     metadata.robots = "noindex";
@@ -45,6 +48,7 @@ export async function generateMetadata({
   return metadata;
 }
 
+// Page component to render the page content & page builder
 export default async function Page({ params }: RouteProps) {
   const { data: page } = await getPage(params);
 

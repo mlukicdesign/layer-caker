@@ -39,14 +39,14 @@
         "value": {
           "type": "string"
         },
-        "optional": true
+        "optional": false
       },
       "destination": {
         "type": "objectAttribute",
         "value": {
           "type": "string"
         },
-        "optional": true
+        "optional": false
       },
       "permanent": {
         "type": "objectAttribute",

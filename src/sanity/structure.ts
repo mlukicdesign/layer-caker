@@ -33,5 +33,5 @@ export const structure: StructureResolver = (S) =>
             .schemaType("siteSettings")
             .documentId("siteSettings")
         ),
-      S.documentTypeListItem("redirect").title("Redirects"),
+      // S.documentTypeListItem("redirect").title("Redirects"),
     ]);

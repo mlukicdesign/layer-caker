@@ -19,8 +19,8 @@ export type Redirect = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  source?: string;
-  destination?: string;
+  source: string;
+  destination: string;
   permanent?: boolean;
   isEnabled?: boolean;
 };
@@ -715,10 +715,27 @@ export type HOME_PAGE_QUERYResult = {
 // Variable: REDIRECTS_QUERY
 // Query: *[_type == "redirect" && isEnabled == true] {      source,      destination,      permanent  }
 export type REDIRECTS_QUERYResult = Array<{
-  source: string | null;
-  destination: string | null;
+  source: string;
+  destination: string;
   permanent: boolean | null;
 }>;
+// Variable: OG_IMAGE_QUERY
+// Query: *[_id == $id][0]{    title,    "image": mainImage.asset->{      url,      metadata {        palette      }    }  }
+export type OG_IMAGE_QUERYResult = {
+  title: null;
+  image: null;
+} | {
+  title: string | null;
+  image: null;
+} | {
+  title: string | null;
+  image: {
+    url: string | null;
+    metadata: {
+      palette: SanityImagePalette | null;
+    } | null;
+  } | null;
+} | null;
 
 // Query TypeMap
 import "@sanity/client";
@@ -730,5 +747,6 @@ declare module "@sanity/client" {
     "*[_type == \"page\" && slug.current == $slug][0]{\n  ...,\n  \"seo\": {\n    \"title\": coalesce(seo.title, title, \"\"),\n    \"description\": coalesce(seo.description,  \"\"),\n    \"image\": seo.image,\n    \"noIndex\": seo.noIndex == true\n  },\n  content[]{\n    ...,\n    _type == \"faqs\" => {\n      ...,\n      faqs[]->\n    }\n  }\n}": PAGE_QUERYResult;
     "*[_id == \"siteSettings\"][0]{\n  homePage->{\n    ...,\n    content[]{\n      ...,\n      _type == \"faqs\" => {\n        ...,\n        faqs[]->\n      }\n    }      \n  }\n}": HOME_PAGE_QUERYResult;
     "\n  *[_type == \"redirect\" && isEnabled == true] {\n      source,\n      destination,\n      permanent\n  }\n": REDIRECTS_QUERYResult;
+    "\n  *[_id == $id][0]{\n    title,\n    \"image\": mainImage.asset->{\n      url,\n      metadata {\n        palette\n      }\n    }\n  }    \n": OG_IMAGE_QUERYResult;
   }
 }
