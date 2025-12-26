@@ -1,6 +1,6 @@
 import { PortableText } from "next-sanity";
 import Image from "next/image";
-import { Title } from "@/components/title";
+import { Title } from "@/components/partials/title";
 import { urlFor } from "@/sanity/lib/image";
 import { PAGE_QUERYResult } from "@/sanity/types";
 

@@ -13,6 +13,28 @@
  */
 
 // Source: schema.json
+export type Navigation = {
+  _id: string;
+  _type: "navigation";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  links?: Array<{
+    label?: string;
+    href?: string;
+    pageLink?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "page";
+    };
+    externalLink?: string;
+    _type: "link";
+    _key: string;
+  }>;
+};
+
 export type Social = {
   _type: "social";
   linkedIn?: string;
@@ -537,7 +559,7 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = Social | Redirect | Seo | SiteSettings | SplitImage | Hero | Features | Faqs | Faq | BlockContent | PageBuilder | Page | SanityImageCrop | SanityImageHotspot | Slug | Post | Author | Category | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = Navigation | Social | Redirect | Seo | SiteSettings | SplitImage | Hero | Features | Faqs | Faq | BlockContent | PageBuilder | Page | SanityImageCrop | SanityImageHotspot | Slug | Post | Author | Category | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/queries.ts
 // Variable: POSTS_QUERY
@@ -886,6 +908,20 @@ export type SITEMAP_QUERYResult = Array<{
   href: string | null;
   _updatedAt: string;
 }>;
+// Variable: NAVIGATION_QUERY
+// Query: *[_type == "navigation"][0]{  links[]{    title,    label,    "href": select(      defined(pageLink) => "/posts/" + pageLink->.slug.current,      defined(externalLink) => externalLink,      href    ),    pageLink->{      _id,      slug    },    externalLink  }}
+export type NAVIGATION_QUERYResult = {
+  links: Array<{
+    title: null;
+    label: string | null;
+    href: string | null;
+    pageLink: {
+      _id: string;
+      slug: Slug | null;
+    } | null;
+    externalLink: string | null;
+  }> | null;
+} | null;
 
 // Query TypeMap
 import "@sanity/client";
@@ -899,5 +935,6 @@ declare module "@sanity/client" {
     "\n  *[_type == \"redirect\" && isEnabled == true] {\n      source,\n      destination,\n      permanent\n  }\n": REDIRECTS_QUERYResult;
     "\n  *[_id == $id][0]{\n    title,\n    \"image\": mainImage.asset->{\n      url,\n      metadata {\n        palette\n      }\n    }\n  }    \n": OG_IMAGE_QUERYResult;
     "\n*[_type in [\"page\", \"post\"] && defined(slug.current)] {\n    \"href\": select(\n      _type == \"page\" => \"/\" + slug.current,\n      _type == \"post\" => \"/posts/\" + slug.current,\n      slug.current\n    ),\n    _updatedAt\n}\n": SITEMAP_QUERYResult;
+    "*[_type == \"navigation\"][0]{\n  links[]{\n    title,\n    label,\n    \"href\": select(\n      defined(pageLink) => \"/posts/\" + pageLink->.slug.current,\n      defined(externalLink) => externalLink,\n      href\n    ),\n    pageLink->{\n      _id,\n      slug\n    },\n    externalLink\n  }\n}": NAVIGATION_QUERYResult;
   }
 }

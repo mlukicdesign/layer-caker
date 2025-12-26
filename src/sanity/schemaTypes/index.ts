@@ -15,6 +15,7 @@ import { siteSettingsType } from "./siteSettingsType";
 import { seoType } from "./seoType";
 import { redirectType } from "./redirectType";
 import { socialType } from "./socialType";
+import { navigationType } from "./navigation";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -33,5 +34,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     seoType,
     redirectType,
     socialType,
+    navigationType,
   ],
 };

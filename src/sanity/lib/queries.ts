@@ -109,6 +109,16 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_id == "siteSettings"][0]{
   }
 }`);
 
+export const SITE_SETTINGS_QUERY = defineQuery(`*[_id == "siteSettings"][0]{
+  title,
+  description,
+  "logo": logo.asset->url,
+  favicon {
+    ...,
+    asset->
+  }
+}`);
+
 // Site Redirects Query
 export const REDIRECTS_QUERY = defineQuery(`
   *[_type == "redirect" && isEnabled == true] {
@@ -145,3 +155,20 @@ export const SITEMAP_QUERY = defineQuery(`
     _updatedAt
 }
 `);
+
+export const NAVIGATION_QUERY = defineQuery(`*[_type == "navigation"][0]{
+  links[]{
+    title,
+    label,
+    "href": select(
+      defined(pageLink) => "/posts/" + pageLink->.slug.current,
+      defined(externalLink) => externalLink,
+      href
+    ),
+    pageLink->{
+      _id,
+      slug
+    },
+    externalLink
+  }
+}`);

@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import { sanityFetch } from "@/sanity/lib/live";
 import { POST_QUERY } from "@/sanity/lib/queries";
-import { Post } from "@/components/post";
+import { Post } from "@/components/views/post";
 import { urlFor } from "@/sanity/lib/image";
 import type { Metadata } from "next";
 

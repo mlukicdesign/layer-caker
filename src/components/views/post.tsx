@@ -1,16 +1,26 @@
-import { PortableText } from 'next-sanity'
-import Image from 'next/image'
+import { PortableText } from "next-sanity";
+import Image from "next/image";
 
-import { Author } from '@/components/author'
-import { Categories } from '@/components/categories'
-import { components } from '@/sanity/portableTextComponents'
-import { POST_QUERYResult } from '@/sanity/types'
-import { PublishedAt } from '@/components/published-at'
-import { Title } from '@/components/title'
-import { urlFor } from '@/sanity/lib/image'
+import { Author } from "@/components/partials/author";
+import { Categories } from "@/components/partials/categories";
+import { components } from "@/sanity/portableTextComponents";
+import { POST_QUERYResult } from "@/sanity/types";
+import { PublishedAt } from "@/components/partials/published-at";
+import { Title } from "@/components/partials/title";
+import { urlFor } from "@/sanity/lib/image";
+import { RelatedPosts } from "@/components/partials/related-posts";
 
 export function Post(props: NonNullable<POST_QUERYResult>) {
-  const { title, author, mainImage, body, publishedAt, categories } = props;
+  const {
+    title,
+    author,
+    mainImage,
+    body,
+    publishedAt,
+    categories,
+    relatedPosts,
+    _id,
+  } = props;
 
   return (
     <article className="grid lg:grid-cols-12 gap-y-12">
@@ -35,6 +45,11 @@ export function Post(props: NonNullable<POST_QUERYResult>) {
       {body ? (
         <div className="lg:col-span-7 lg:col-start-6 prose lg:prose-lg">
           <PortableText value={body} components={components} />
+          <RelatedPosts
+            relatedPosts={relatedPosts}
+            documentId={_id}
+            documentType="post"
+          />
         </div>
       ) : null}
     </article>
