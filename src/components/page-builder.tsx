@@ -1,23 +1,20 @@
-
 "use client";
 
 import { Hero } from "@/components/blocks/hero";
 import { Features } from "@/components/blocks/features";
 import { SplitImage } from "@/components/blocks/split-image";
-import { FAQs } from "@/components/blocks/faqs";
+// import { FAQs } from "@/components/blocks/faqs";
 import { PAGE_QUERYResult } from "@/sanity/types";
 import { client } from "@/sanity/lib/client";
 import { createDataAttribute } from "next-sanity";
 import { useOptimistic } from "next-sanity/hooks";
 
-
 // enables the CMS page builder
 // Switch to matching selected express
 // Each array item has a distinct _type attribute, which you can switch over to render the correct component.
 // Each item also contains a unique (to the array) _key value, which can be passed to React as a key prop—required by React for performant and consistent rendering of an array.
- // Passed the remaining props to the block component using the spread operator.
- // 
-
+// Passed the remaining props to the block component using the spread operator.
+//
 
 type PageBuilderProps = {
   content: NonNullable<PAGE_QUERYResult>["content"];
@@ -33,9 +30,10 @@ export const createDataAttributeConfig = {
 };
 
 // Base union of blocks coming from the PageBuilder content
-type Block = NonNullable<
-  NonNullable<PAGE_QUERYResult>["content"]
->[number] & { _key: string; _type: string };
+type Block = NonNullable<NonNullable<PAGE_QUERYResult>["content"]>[number] & {
+  _key: string;
+  _type: string;
+};
 
 export function PageBuilder({
   content,
@@ -85,7 +83,6 @@ export function PageBuilder({
           </div>
         );
 
-
         // Refactor this to an object reference
         switch (block._type) {
           case "hero":
@@ -106,14 +103,15 @@ export function PageBuilder({
                 <SplitImage {...block} />
               </DragHandle>
             );
-          case "faqs":
-            return (
-              <DragHandle key={block._key}>
-                <FAQs {...block} />
-              </DragHandle>
-            );
+          // case "faqs":
+          //   return (
+          //     <DragHandle key={block._key}>
+          //       <FAQs {...block} />
+          //     </DragHandle>
+          //   );
           default:
             // This is a fallback for when we don't have a block type
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const fallback = block as any;
             return (
               <div key={fallback?._key ?? "unknown"}>

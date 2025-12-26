@@ -34,3 +34,14 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+## Sanity Studio to-do: 
+- [x] Add `sanity-plugin-media` to the Sanity Studio configuration and set it up according to the [official documentation](https://www.sanity.io/plugins/sanity-plugin-media).
+- [ ] Add basic contact form functionality to the solution using Sanity as the backend.
+- [ ] Add nested navigation structures for easier menu management in Sanity Studio. 
+- [ ] Implement proper development & production datasets & environment variables for Sanity Studio and Next.js app.
+- [ ] Add basic block patterns to the Sanity Studio schema for easier content creation.
+- [ ] Create, succinct, client editor documentation
+- [ ] Create succinct developer documentation
+- [ ] Optional Storybook integration for Sanity Studio components
