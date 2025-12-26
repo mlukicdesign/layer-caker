@@ -3,7 +3,6 @@
 import { Hero } from "@/components/blocks/hero";
 import { Features } from "@/components/blocks/features";
 import { SplitImage } from "@/components/blocks/split-image";
-// import { FAQs } from "@/components/blocks/faqs";
 import { PAGE_QUERYResult } from "@/sanity/types";
 import { client } from "@/sanity/lib/client";
 import { createDataAttribute } from "next-sanity";
@@ -103,12 +102,6 @@ export function PageBuilder({
                 <SplitImage {...block} />
               </DragHandle>
             );
-          // case "faqs":
-          //   return (
-          //     <DragHandle key={block._key}>
-          //       <FAQs {...block} />
-          //     </DragHandle>
-          //   );
           default:
             // This is a fallback for when we don't have a block type
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
