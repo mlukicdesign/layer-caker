@@ -19,7 +19,6 @@ export const structure: StructureResolver = (S) =>
     .title("Site Structure")
     .items([
       S.documentTypeListItem("page").title("Pages"),
-      S.documentTypeListItem("faq").title("FAQs"),
       S.divider(),
       S.documentTypeListItem("post").title("Posts"),
       S.documentTypeListItem("category").title("Categories"),

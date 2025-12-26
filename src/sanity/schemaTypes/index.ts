@@ -6,8 +6,6 @@ import { postType } from "./postType";
 import { authorType } from "./authorType";
 import { pageType } from "./pageType";
 import { pageBuilderType } from "./pageBuilderType";
-import { faqType } from "./faqType";
-import { faqsType } from "./blockSchemas/faqsType";
 import { featuresType } from "./blockSchemas/featuresType";
 import { heroType } from "./blockSchemas/heroType";
 import { splitImageType } from "./blockSchemas/splitImageType";
@@ -25,8 +23,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     authorType,
     pageType,
     pageBuilderType,
-    faqType,
-    faqsType,
     featuresType,
     heroType,
     splitImageType,

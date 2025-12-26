@@ -99,13 +99,7 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_id == "siteSettings"][0]{
     "image": seo.image,
     "noIndex": seo.noIndex == true
   },
-    content[]{
-      ...,
-      _type == "faqs" => {
-        ...,
-        faqs[]->
-      }
-    }      
+    content[]
   }
 }`);
 
