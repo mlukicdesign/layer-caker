@@ -25,7 +25,8 @@ export async function Navigation() {
             <Link href={link.href ? link.href : "#"}>{link.label}</Link>
 
             {/* Dropdown for child links */}
-            {link.children && link.children.length > 0 && (
+            {/* Dropdown for child links */}
+            {link.children ? (
               <ul className="absolute left-0 top-full hidden group-hover:block bg-white border border-gray-200 rounded-md shadow-lg min-w-max z-50">
                 {link.children.map((childLink, index) => (
                   <li key={index} className="hover:bg-gray-100">
@@ -38,7 +39,7 @@ export async function Navigation() {
                   </li>
                 ))}
               </ul>
-            )}
+            ) : null}
           </li>
         ))}
       </ul>
