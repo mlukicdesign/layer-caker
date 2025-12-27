@@ -4,14 +4,13 @@ import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
 import { sanityFetch } from "@/sanity/lib/live";
 import { SITE_SETTINGS_QUERY } from "@/sanity/lib/queries";
-import { SiteSettings } from "@/sanity/types";
-
-const { data: siteSettings } = await sanityFetch({
-  query: SITE_SETTINGS_QUERY,
-});
 
 export async function Header() {
   // const navigation = useNavigation();
+
+  const { data: siteSettings } = await sanityFetch({
+    query: SITE_SETTINGS_QUERY,
+  });
 
   return (
     <div className="from-pink-50 to-white bg-gradient-to-b p-6">
