@@ -1,18 +1,20 @@
-import { NAVIGATION_QUERYResult } from "@/sanity/types";
 import Link from "next/link";
 import { sanityFetch } from "@/sanity/lib/live";
 import { NAVIGATION_QUERY } from "@/sanity/lib/queries";
+import { NAVIGATION_QUERYResult } from "@/sanity/types";
 
-export async function Navigation() {
-  const { data: navigation } = await sanityFetch({
+type NavigationProps = NonNullable<NAVIGATION_QUERYResult>;
+
+export async function Navigation({}: NavigationProps) {
+  const { data: navigationData } = await sanityFetch({
     query: NAVIGATION_QUERY,
   });
 
-  if (!navigation?.links || navigation.links.length === 0) {
+  if (!navigationData?.links || navigationData.links.length === 0) {
     return null;
   }
 
-  const links = navigation.links;
+  const links = navigationData.links;
 
   return (
     <nav>
