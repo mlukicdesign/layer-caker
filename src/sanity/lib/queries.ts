@@ -107,6 +107,13 @@ export const SITE_SETTINGS_QUERY = defineQuery(`*[_id == "siteSettings"][0]{
   title,
   description,
   "logo": logo.asset->url,
+  siteIdentity {
+    logo {
+      logoDark {
+        asset->
+      }
+    }
+  },
   favicon {
     ...,
     asset->
@@ -150,12 +157,12 @@ export const SITEMAP_QUERY = defineQuery(`
 }
 `);
 
-export const NAVIGATION_QUERY = defineQuery(`*[_type == "navigation"][0]{
+export const NAVIGATION_QUERY = defineQuery(`*[_type == "navigation"][1]{
   links[]{
     title,
     label,
     "href": select(
-      defined(pageLink) => "/posts/" + pageLink->.slug.current,
+      defined(pageLink) => pageLink->.slug.current,
       defined(externalLink) => externalLink,
       href
     ),

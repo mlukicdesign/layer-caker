@@ -862,21 +862,57 @@ export type HOME_PAGE_QUERYResult = {
   } | null;
 } | null;
 // Variable: SITE_SETTINGS_QUERY
-// Query: *[_id == "siteSettings"][0]{  title,  description,  "logo": logo.asset->url,  favicon {    ...,    asset->  }}
+// Query: *[_id == "siteSettings"][0]{  title,  description,  "logo": logo.asset->url,  siteIdentity {    logo {      logoDark {        asset->      }    }  },  favicon {    ...,    asset->  }}
 export type SITE_SETTINGS_QUERYResult = {
   title: null;
   description: null;
   logo: null;
+  siteIdentity: null;
   favicon: null;
 } | {
   title: string | null;
   description: null;
   logo: null;
+  siteIdentity: null;
+  favicon: null;
+} | {
+  title: null;
+  description: null;
+  logo: null;
+  siteIdentity: {
+    logo: {
+      logoDark: {
+        asset: {
+          _id: string;
+          _type: "sanity.imageAsset";
+          _createdAt: string;
+          _updatedAt: string;
+          _rev: string;
+          originalFilename?: string;
+          label?: string;
+          title?: string;
+          description?: string;
+          altText?: string;
+          sha1hash?: string;
+          extension?: string;
+          mimeType?: string;
+          size?: number;
+          assetId?: string;
+          uploadId?: string;
+          path?: string;
+          url?: string;
+          metadata?: SanityImageMetadata;
+          source?: SanityAssetSourceData;
+        } | null;
+      } | null;
+    } | null;
+  } | null;
   favicon: null;
 } | {
   title: string | null;
   description: string | null;
   logo: null;
+  siteIdentity: null;
   favicon: null;
 } | null;
 // Variable: REDIRECTS_QUERY
@@ -910,7 +946,7 @@ export type SITEMAP_QUERYResult = Array<{
   _updatedAt: string;
 }>;
 // Variable: NAVIGATION_QUERY
-// Query: *[_type == "navigation"][0]{  links[]{    title,    label,    "href": select(      defined(pageLink) => "/posts/" + pageLink->.slug.current,      defined(externalLink) => externalLink,      href    ),    pageLink->{      _id,      slug    },    externalLink  }}
+// Query: *[_type == "navigation"][1]{  links[]{    title,    label,    "href": select(      defined(pageLink) => pageLink->.slug.current,      defined(externalLink) => externalLink,      href    ),    pageLink->{      _id,      slug    },    externalLink  }}
 export type NAVIGATION_QUERYResult = {
   links: Array<{
     title: null;
@@ -933,10 +969,10 @@ declare module "@sanity/client" {
     "*[_type == \"post\" && slug.current == $slug][0]{\n  \"seo\": {\n    \"title\": coalesce(seo.title, title, \"\"),\n    \"description\": coalesce(seo.description,  \"\"),\n    \"image\": seo.image,\n    \"noIndex\": seo.noIndex == true\n  },\n  _id,\n  title,\n  body,\n  mainImage,\n  publishedAt,\n  \"categories\": coalesce(\n    categories[]->{\n      _id,\n      slug,\n      title\n    },\n    []\n  ),\n  author->{\n    name,\n    image\n  },\n  relatedPosts[]{\n    _key, // required for drag and drop\n    ...@->{_id, title, slug} // get fields from the referenced post\n  }\n}": POST_QUERYResult;
     "*[_type == \"page\" && slug.current == $slug][0]{\n  ...,\n  \"seo\": {\n    \"title\": coalesce(seo.title, title, \"\"),\n    \"description\": coalesce(seo.description,  \"\"),\n    \"image\": seo.image,\n    \"noIndex\": seo.noIndex == true\n  },\n  content[]{\n    ...,\n    _type == \"faqs\" => {\n      ...,\n      faqs[]->{\n  _id,\n  title,\n  body,\n  \"text\": pt::text(body)\n}\n    }\n  }\n}": PAGE_QUERYResult;
     "*[_id == \"siteSettings\"][0]{\n  homePage->{\n    ...,\n    \"seo\": {\n    \"title\": coalesce(seo.title, title, \"\"),\n    \"description\": coalesce(seo.description,  \"\"),\n    \"image\": seo.image,\n    \"noIndex\": seo.noIndex == true\n  },\n    content[]\n  }\n}": HOME_PAGE_QUERYResult;
-    "*[_id == \"siteSettings\"][0]{\n  title,\n  description,\n  \"logo\": logo.asset->url,\n  favicon {\n    ...,\n    asset->\n  }\n}": SITE_SETTINGS_QUERYResult;
+    "*[_id == \"siteSettings\"][0]{\n  title,\n  description,\n  \"logo\": logo.asset->url,\n  siteIdentity {\n    logo {\n      logoDark {\n        asset->\n      }\n    }\n  },\n  favicon {\n    ...,\n    asset->\n  }\n}": SITE_SETTINGS_QUERYResult;
     "\n  *[_type == \"redirect\" && isEnabled == true] {\n      source,\n      destination,\n      permanent\n  }\n": REDIRECTS_QUERYResult;
     "\n  *[_id == $id][0]{\n    title,\n    \"image\": mainImage.asset->{\n      url,\n      metadata {\n        palette\n      }\n    }\n  }    \n": OG_IMAGE_QUERYResult;
     "\n*[_type in [\"page\", \"post\"] && defined(slug.current)] {\n    \"href\": select(\n      _type == \"page\" => \"/\" + slug.current,\n      _type == \"post\" => \"/posts/\" + slug.current,\n      slug.current\n    ),\n    _updatedAt\n}\n": SITEMAP_QUERYResult;
-    "*[_type == \"navigation\"][0]{\n  links[]{\n    title,\n    label,\n    \"href\": select(\n      defined(pageLink) => \"/posts/\" + pageLink->.slug.current,\n      defined(externalLink) => externalLink,\n      href\n    ),\n    pageLink->{\n      _id,\n      slug\n    },\n    externalLink\n  }\n}": NAVIGATION_QUERYResult;
+    "*[_type == \"navigation\"][1]{\n  links[]{\n    title,\n    label,\n    \"href\": select(\n      defined(pageLink) => pageLink->.slug.current,\n      defined(externalLink) => externalLink,\n      href\n    ),\n    pageLink->{\n      _id,\n      slug\n    },\n    externalLink\n  }\n}": NAVIGATION_QUERYResult;
   }
 }

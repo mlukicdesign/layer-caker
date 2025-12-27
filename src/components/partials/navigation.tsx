@@ -1,32 +1,27 @@
+import { NAVIGATION_QUERY } from "@/sanity/lib/queries";
 import Link from "next/link";
+import { sanityFetch } from "@/sanity/lib/live";
 
-type NavigationLink = {
-  title?: string;
-  label: string;
-  href: string;
-};
+export async function Navigation() {
+  const { data: navigation } = await sanityFetch({
+    query: NAVIGATION_QUERY,
+  });
 
-type NavigationProps = {
-  navigation: {
-    links?: NavigationLink[] | null;
-  } | null;
-};
+  if (!navigation?.links || navigation.links.length === 0) {
+    return null;
+  }
 
-const Navigation = ({ navigation }: NavigationProps) => {
   return (
     <nav>
-      <ul>
-        {navigation?.links?.map((link, index) => {
-          if (!link) return null;
-          return (
-            <li key={index}>
-              <Link href={link.href}>{link.label}</Link>
-            </li>
-          );
-        })}
+      <ul className="flex gap-4">
+        {navigation.links.map((link) => (
+          <li key={link.title}>
+            <Link href={link.href ? link.href : "#"}>{link.label}</Link>
+          </li>
+        ))}
       </ul>
     </nav>
   );
-};
+}
 
 export default Navigation;
