@@ -38,6 +38,13 @@ export const navigationType = defineType({
               validation: (Rule) => Rule.required(),
             }),
             defineField({
+              name: "isFeatured",
+              type: "boolean",
+              title: "Featured Link",
+              description: "Mark this link as featured for special styling.",
+              initialValue: false,
+            }),
+            defineField({
               name: "pageLink",
               type: "reference",
               to: [{ type: "page" }],

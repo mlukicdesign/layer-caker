@@ -161,6 +161,7 @@ export const NAVIGATION_QUERY = defineQuery(`*[_type == "navigation"][1]{
   links[]{
     title,
     label,
+    isFeatured,
     "href": select(
       defined(pageLink) => pageLink->.slug.current,
       defined(externalLink) => externalLink,
@@ -170,6 +171,19 @@ export const NAVIGATION_QUERY = defineQuery(`*[_type == "navigation"][1]{
       _id,
       slug
     },
-    externalLink
+    externalLink,
+    children[]{
+      label,
+      "href": select(
+        defined(pageLink) => pageLink->.slug.current,
+        defined(externalLink) => externalLink,
+        href
+      ),
+      pageLink->{
+        _id,
+        slug
+      },
+      externalLink
+    }
   }
 }`);

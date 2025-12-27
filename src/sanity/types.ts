@@ -23,6 +23,7 @@ export type Navigation = {
   links?: Array<{
     label: string;
     linkType: "internal" | "external";
+    isFeatured?: boolean;
     pageLink?: {
       _ref: string;
       _type: "reference";
@@ -30,6 +31,19 @@ export type Navigation = {
       [internalGroqTypeReferenceTo]?: "page";
     };
     externalLink?: string;
+    children?: Array<{
+      label: string;
+      linkType: "internal" | "external";
+      pageLink?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "page";
+      };
+      externalLink?: string;
+      _type: "childLink";
+      _key: string;
+    }>;
     _type: "link";
     _key: string;
   }>;
@@ -946,17 +960,27 @@ export type SITEMAP_QUERYResult = Array<{
   _updatedAt: string;
 }>;
 // Variable: NAVIGATION_QUERY
-// Query: *[_type == "navigation"][1]{  links[]{    title,    label,    "href": select(      defined(pageLink) => pageLink->.slug.current,      defined(externalLink) => externalLink,      href    ),    pageLink->{      _id,      slug    },    externalLink  }}
+// Query: *[_type == "navigation"][1]{  links[]{    title,    label,    isFeatured,    "href": select(      defined(pageLink) => pageLink->.slug.current,      defined(externalLink) => externalLink,      href    ),    pageLink->{      _id,      slug    },    externalLink,    children[]{      label,      "href": select(        defined(pageLink) => pageLink->.slug.current,        defined(externalLink) => externalLink,        href      ),      pageLink->{        _id,        slug      },      externalLink    }  }}
 export type NAVIGATION_QUERYResult = {
   links: Array<{
     title: null;
     label: string;
+    isFeatured: boolean | null;
     href: string | null;
     pageLink: {
       _id: string;
       slug: Slug | null;
     } | null;
     externalLink: string | null;
+    children: Array<{
+      label: string;
+      href: string | null;
+      pageLink: {
+        _id: string;
+        slug: Slug | null;
+      } | null;
+      externalLink: string | null;
+    }> | null;
   }> | null;
 } | null;
 
@@ -973,6 +997,6 @@ declare module "@sanity/client" {
     "\n  *[_type == \"redirect\" && isEnabled == true] {\n      source,\n      destination,\n      permanent\n  }\n": REDIRECTS_QUERYResult;
     "\n  *[_id == $id][0]{\n    title,\n    \"image\": mainImage.asset->{\n      url,\n      metadata {\n        palette\n      }\n    }\n  }    \n": OG_IMAGE_QUERYResult;
     "\n*[_type in [\"page\", \"post\"] && defined(slug.current)] {\n    \"href\": select(\n      _type == \"page\" => \"/\" + slug.current,\n      _type == \"post\" => \"/posts/\" + slug.current,\n      slug.current\n    ),\n    _updatedAt\n}\n": SITEMAP_QUERYResult;
-    "*[_type == \"navigation\"][1]{\n  links[]{\n    title,\n    label,\n    \"href\": select(\n      defined(pageLink) => pageLink->.slug.current,\n      defined(externalLink) => externalLink,\n      href\n    ),\n    pageLink->{\n      _id,\n      slug\n    },\n    externalLink\n  }\n}": NAVIGATION_QUERYResult;
+    "*[_type == \"navigation\"][1]{\n  links[]{\n    title,\n    label,\n    isFeatured,\n    \"href\": select(\n      defined(pageLink) => pageLink->.slug.current,\n      defined(externalLink) => externalLink,\n      href\n    ),\n    pageLink->{\n      _id,\n      slug\n    },\n    externalLink,\n    children[]{\n      label,\n      \"href\": select(\n        defined(pageLink) => pageLink->.slug.current,\n        defined(externalLink) => externalLink,\n        href\n      ),\n      pageLink->{\n        _id,\n        slug\n      },\n      externalLink\n    }\n  }\n}": NAVIGATION_QUERYResult;
   }
 }

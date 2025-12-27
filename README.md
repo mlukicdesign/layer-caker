@@ -39,7 +39,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ## Sanity Studio to-do: 
 - [x] Add `sanity-plugin-media` to the Sanity Studio configuration and set it up according to the [official documentation](https://www.sanity.io/plugins/sanity-plugin-media).
 - [ ] Add basic contact form functionality to the solution using Sanity as the backend.
-- [ ] Add nested navigation structures for easier menu management in Sanity Studio. 
+- [x] Add nested navigation structures for easier menu management in Sanity Studio. 
+ - [ ] Build upon this by implement Radix accessible primitives for dropdowns and flyouts.
 - [ ] Implement proper development & production datasets & environment variables for Sanity Studio and Next.js app.
 - [ ] Add basic block patterns to the Sanity Studio schema for easier content creation.
 - [ ] Create, succinct, client editor documentation
