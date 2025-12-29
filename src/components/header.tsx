@@ -6,8 +6,7 @@ import { sanityFetch } from "@/sanity/lib/live";
 import { NAVIGATION_QUERY, SITE_SETTINGS_QUERY } from "@/sanity/lib/queries";
 
 export async function Header() {
-  // const navigation = useNavigation();
-
+  // Component fetches both site settings and navigation data from Sanity CMS
   const { data: siteSettings } = await sanityFetch({
     query: SITE_SETTINGS_QUERY,
   });
