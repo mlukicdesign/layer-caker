@@ -157,33 +157,27 @@ export const SITEMAP_QUERY = defineQuery(`
 }
 `);
 
-export const NAVIGATION_QUERY = defineQuery(`*[_type == "navigation"][1]{
-  links[]{
-    title,
+export const NAVIGATION_QUERY = `*[_type == "navigation" && title == "Main Navigation"][0]{
+  title,
+  items[]{
     label,
-    isFeatured,
-    "href": select(
-      defined(pageLink) => pageLink->.slug.current,
-      defined(externalLink) => externalLink,
-      href
+    "url": select(
+      defined(externalUrl) => externalUrl,
+      defined(link) => link->slug.current
     ),
-    pageLink->{
-      _id,
-      slug
-    },
-    externalLink,
     children[]{
       label,
-      "href": select(
-        defined(pageLink) => pageLink->.slug.current,
-        defined(externalLink) => externalLink,
-        href
+      "url": select(
+        defined(externalUrl) => externalUrl,
+        defined(link) => link->slug.current
       ),
-      pageLink->{
-        _id,
-        slug
-      },
-      externalLink
+      children[]{
+        label,
+        "url": select(
+          defined(externalUrl) => externalUrl,
+          defined(link) => link->slug.current
+        )
+      }
     }
   }
-}`);
+}`;

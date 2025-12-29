@@ -1,56 +1,83 @@
+// components/Navigation.tsx
+"use client";
+
 import Link from "next/link";
-import { sanityFetch } from "@/sanity/lib/live";
-import { NAVIGATION_QUERY } from "@/sanity/lib/queries";
-import { NAVIGATION_QUERYResult } from "@/sanity/types";
+import { useState } from "react";
 
-type NavigationProps = NonNullable<NAVIGATION_QUERYResult>;
+interface NavigationItem {
+  label: string;
+  url?: string;
+  children?: NavigationItem[];
+}
 
-export async function Navigation({}: NavigationProps) {
-  const { data: navigationData } = await sanityFetch({
-    query: NAVIGATION_QUERY,
-  });
+interface NavigationProps {
+  items: NavigationItem[];
+}
 
-  if (!navigationData?.links || navigationData.links.length === 0) {
-    return null;
-  }
-
-  const links = navigationData.links;
-
+export default function Navigation({ items }: NavigationProps) {
   return (
-    <nav>
-      <ul className="flex gap-4">
-        {links.map((link) => {
-          const children = link.children || [];
-          return (
-            <li
-              key={link.href}
-              className={`relative group ${
-                link.isFeatured ? "font-bold text-pink-600" : ""
-              }`}
-            >
-              <Link href={link.href ? link.href : "#"}>{link.label}</Link>
-
-              {/* Dropdown for child links */}
-              {children.length > 0 && (
-                <ul className="absolute left-0 top-full hidden group-hover:block bg-white border border-gray-200 rounded-md shadow-lg min-w-max z-50">
-                  {children.map((childLink, index) => (
-                    <li key={index} className="hover:bg-gray-100">
-                      <Link
-                        href={childLink.href ? childLink.href : "#"}
-                        className="block px-4 py-2"
-                      >
-                        {childLink.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          );
-        })}
-      </ul>
+    <nav className="flex items-center gap-8">
+      {items.map((item, index) =>
+        item.children && item.children.length > 0 ? (
+          <DropdownLink key={index} item={item} />
+        ) : (
+          <Link
+            key={index}
+            href={item.url || "#"}
+            className="hover:text-gray-600 transition-colors"
+          >
+            {item.label}
+          </Link>
+        )
+      )}
     </nav>
   );
 }
 
-export default Navigation;
+function DropdownLink({ item }: { item: NavigationItem }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div
+      className="relative"
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+    >
+      <button
+        className="flex items-center gap-1 hover:text-gray-600 transition-colors"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        {item.label}
+        <svg
+          className={`w-4 h-4 transition-transform ${
+            isOpen ? "rotate-180" : ""
+          }`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
+
+      {isOpen && (
+        <div className="absolute top-full left-0 mt-2 w-48 bg-white shadow-lg rounded-md py-2 z-50">
+          {item.children?.map((child, index) => (
+            <Link
+              key={index}
+              href={child.url || "#"}
+              className="block px-4 py-2 hover:bg-gray-100 transition-colors"
+            >
+              {child.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

@@ -3,13 +3,17 @@ import Navigation from "./partials/navigation";
 import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
 import { sanityFetch } from "@/sanity/lib/live";
-import { SITE_SETTINGS_QUERY } from "@/sanity/lib/queries";
+import { NAVIGATION_QUERY, SITE_SETTINGS_QUERY } from "@/sanity/lib/queries";
 
 export async function Header() {
   // const navigation = useNavigation();
 
   const { data: siteSettings } = await sanityFetch({
     query: SITE_SETTINGS_QUERY,
+  });
+
+  const { data: navigation } = await sanityFetch({
+    query: NAVIGATION_QUERY,
   });
 
   return (
@@ -30,7 +34,7 @@ export async function Header() {
             height={50}
           />
         </Link>
-        <Navigation />
+        <Navigation items={navigation?.items || []} />
       </header>
     </div>
   );
