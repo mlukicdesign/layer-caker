@@ -46,3 +46,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - [ ] Create, succinct, client editor documentation
 - [ ] Create succinct developer documentation
 - [ ] Optional Storybook integration for Sanity Studio components
+- [ ] Add CoPilot instructions for common development tasks and AI assisted development.
